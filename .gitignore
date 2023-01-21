@@ -1,0 +1,6 @@
+*.lo
+*.pot
+*.pyc
+__pycache__ 
+*.bak 
+.venv
