@@ -2,6 +2,8 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
+from api.models import Asset
+
 
 class LoginSerializer(serializers.Serializer):
     """
@@ -39,7 +41,8 @@ class LoginSerializer(serializers.Serializer):
         # It will be used in the view.
         attrs['user'] = user
         return attrs
-    
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -51,4 +54,14 @@ class UserSerializer(serializers.ModelSerializer):
             'is_staff',
             'is_superuser',
             'is_active',
+        ]
+
+
+class AssetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Asset
+        fields = [
+            'description',
+            'category',
+            'pieces'
         ]
