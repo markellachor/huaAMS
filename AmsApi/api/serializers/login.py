@@ -1,14 +1,14 @@
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
-from rest_framework import serializers
-
 from api.models import Asset
+from django.contrib.auth import authenticate
+from rest_framework import serializers
 
 
 class LoginSerializer(serializers.Serializer):
     """
-    This serializer defines two fields used for authentication: username and password.
-    It will try to authenticate the user with username/password when validated.
+    This serializer defines two fields used
+    for authentication: username and password.
+    It will try to authenticate the user with
+    username/password when validated.
     """
     username = serializers.CharField(
         label="Username",
@@ -41,27 +41,3 @@ class LoginSerializer(serializers.Serializer):
         # It will be used in the view.
         attrs['user'] = user
         return attrs
-
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = [
-            'username',
-            'email',
-            'first_name',
-            'last_name',
-            'is_staff',
-            'is_superuser',
-            'is_active',
-        ]
-
-
-class AssetSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Asset
-        fields = [
-            'description',
-            'category',
-            'pieces'
-        ]

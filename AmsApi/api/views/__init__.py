@@ -1,3 +1,4 @@
 # Relative import. Notice "."
+from .assets import *
 from .auth import *
-from .user import * 
+from .users import *

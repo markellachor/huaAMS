@@ -1,7 +1,7 @@
 from djongo import models
 
 SCHOOL_CHOICES = (
-    ('Enviroment', 'SCHOOL OF ENVIRONMENT, GEOGRAPHY AND APPLIED ECONOMICS'),
+    ('Environment', 'SCHOOL OF ENVIRONMENT, GEOGRAPHY AND APPLIED ECONOMICS'),
     ('Digital', 'SCHOOL OF DIGITAL TECHNOLOGY'),
     ('Health', 'SCHOOL OF HEALTH SCIENCE AND EDUCATION'),
 )
@@ -16,49 +16,51 @@ DEPARTMENT_CHOICES = (
 
 )
 
-# Staff = {
 
-# }
-
-
-class ResearchProgramm(models.Model):
+class ResearchProgram(models.Model):
+    _id = models.ObjectIdField()
     title = models.TextField()
     researcher = models.TextField()
     description = models.TextField()
 
 
 class Price(models.Model):
-    price = models.TextField()
+    _id = models.ObjectIdField()
+    value = models.TextField()
     currency = models.TextField()
-    
+
     class Meta:
         abstract = True
 
+
 class Building(models.Model):
-    buildingName = models.CharField(max_length=255)
+    _id = models.ObjectIdField()
+    building_name = models.CharField(max_length=255)
     location = models.TextField()
 
 
 class Asset(models.Model):
-    registrationNumber = models.ObjectIdField()
+    _id = models.ObjectIdField()
+    registration_number = models.TextField()
     description = models.TextField()
     category = models.CharField(max_length=255)
     pieces = models.IntegerField()
-    serialNumber = models.TextField()
-    invoiceNumber = models.TextField()
-    invoiceValue = models.EmbeddedField(model_container=Price,default=None)
-    acquisitionValue = models.EmbeddedField(model_container=Price,default=None)
-    taxValue = models.EmbeddedField(model_container=Price,default=None)
+    serial_number = models.TextField()
+    invoice_number = models.TextField()
+    invoice_value = models.EmbeddedField(model_container=Price, default=None)
+    acquisition_value = models.EmbeddedField(model_container=Price,
+                                             default=None)
+    tax_value = models.EmbeddedField(model_container=Price, default=None)
     supplier = models.TextField(max_length=255)
-    building = models.ForeignKey("Building",on_delete=models.CASCADE)
+    building = models.EmbeddedField(model_container=Building, default=None)
     office = models.TextField()
     school = models.TextField(choices=SCHOOL_CHOICES)
     department = models.TextField(choices=DEPARTMENT_CHOICES)
-    assetManager = models.TextField()
+    asset_manager = models.TextField()
     changes_additions = models.TextField()
-    researchProgramm = models.ForeignKey(
-        ResearchProgramm, on_delete=models.CASCADE)
-    invoiceURL = models.URLField()
+    research_program = models.EmbeddedField(model_container=ResearchProgram,
+                                            default=None)
+    invoice_url = models.URLField()
     objects = models.DjongoManager()
 
     def __str__(self):
