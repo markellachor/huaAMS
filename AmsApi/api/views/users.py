@@ -12,7 +12,6 @@ class UsersView(views.APIView):
     def get(self, _request, id=None):
         try:
             if id is not None:
-                print(id)
                 user_instance = User.objects.get(id=id)
                 data = serializers.UserSerializer(instance=user_instance).data
                 response = JsonResponse(data=data)
@@ -30,13 +29,15 @@ class UsersView(views.APIView):
         return response
 
     def post(self, request):
-        body = request.data
-        # TODO: Validate data -> Middlewares?
-        user = User.objects.create_user(
-            username=body['username'],
-            email=body['email'],
-            last_name=body['lastName'],
-            first_name=body['firstName'])
-
-        print(user)
-        return Response(None, status=status.HTTP_204_NO_CONTENT)
+        print(request.data)
+        serializer = serializers.UserSerializer(data=self.request.data,
+                                                context={'request':
+                                                         self.request})
+        if serializer.is_valid():
+            print("inside")
+            instance = serializer.save()
+            print(instance)
+            return Response(serializer, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)

@@ -61,6 +61,7 @@ class Asset(models.Model):
     research_program = models.EmbeddedField(model_container=ResearchProgram,
                                             default=None)
     invoice_url = models.URLField()
+    user_id = models.TextField()
     objects = models.DjongoManager()
 
     def __str__(self):
