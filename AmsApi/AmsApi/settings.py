@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api.apps.ApiConfig',
     'corsheaders',
-    'rest_framework'
+    'rest_framework',
+    'djmoney'
 ]
 
 MIDDLEWARE = [
@@ -88,28 +89,15 @@ WSGI_APPLICATION = 'AmsApi.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-        'default': {
-            'ENGINE': 'djongo',
-            'NAME': env('DATABASE_NAME'),
-            'ENFORCE_SCHEMA': False,
-            'CLIENT': {
-                'host':  env('DATABASE_HOST'),
-                'port': env.int('DATABASE_PORT'),
-                'username': env('DATABASE_USER'),
-                'password': env('DATABASE_PASSWORD'),
-                'authSource': "delivery"
-            },
-            'LOGGING': {
-                'version': 1,
-                'loggers': {
-                    'djongo': {
-                        'level': 'DEBUG',
-                        'propagate': False
-                    }
-                },
-            },
-        }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env("DATABASE_NAME"),
+        'USER': env("DATABASE_USER"),
+        'PASSWORD': env("DATABASE_PASSWORD"),
+        'HOST': env("DATABASE_HOST"),
+        'PORT': env("DATABASE_PORT"),
     }
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

@@ -1,68 +1,45 @@
-from djongo import models
-
-SCHOOL_CHOICES = (
-    ('Environment', 'SCHOOL OF ENVIRONMENT, GEOGRAPHY AND APPLIED ECONOMICS'),
-    ('Digital', 'SCHOOL OF DIGITAL TECHNOLOGY'),
-    ('Health', 'SCHOOL OF HEALTH SCIENCE AND EDUCATION'),
-)
-
-
-DEPARTMENT_CHOICES = (
-    ('Economics', 'Economics and Sustainable Development'),
-    ('Geography', 'Geography'),
-    ('Tourism', 'International Master of Sustainable Tourism Development'),
-    ('Informatics', 'Informatics and Telematics'),
-    ('Dietetics', 'Nutrition and Dietetics'),
-
-)
+from django.conf import settings
+from django.db import models
+from djmoney.models.fields import MoneyField
 
 
 class ResearchProgram(models.Model):
-    _id = models.ObjectIdField()
-    title = models.TextField()
-    researcher = models.TextField()
+    title = models.CharField(max_length=255)
+    researcher = models.CharField(max_length=100)
     description = models.TextField()
 
 
-class Price(models.Model):
-    _id = models.ObjectIdField()
-    value = models.TextField()
-    currency = models.TextField()
-
-    class Meta:
-        abstract = True
+class Department(models.Model):
+    name: models.CharField(max_length=255)
+    school: models.CharField(max_length=255)
 
 
 class Building(models.Model):
-    _id = models.ObjectIdField()
-    building_name = models.CharField(max_length=255)
-    location = models.TextField()
+    name = models.CharField(max_length=255)
+    location = models.CharField(max_length=255)
 
 
 class Asset(models.Model):
-    _id = models.ObjectIdField()
     registration_number = models.TextField()
     description = models.TextField()
     category = models.CharField(max_length=255)
     pieces = models.IntegerField()
     serial_number = models.TextField()
     invoice_number = models.TextField()
-    invoice_value = models.EmbeddedField(model_container=Price, default=None)
-    acquisition_value = models.EmbeddedField(model_container=Price,
-                                             default=None)
-    tax_value = models.EmbeddedField(model_container=Price, default=None)
+    invoice_value = MoneyField(max_digits=14, decimal_places=2,
+                               default_currency='EUR')
+    acquisition_value = MoneyField(max_digits=14, decimal_places=2,
+                                   default_currency='EUR')
+    tax_value = MoneyField(max_digits=14, decimal_places=2,
+                           default_currency='EUR')
     supplier = models.TextField(max_length=255)
-    building = models.EmbeddedField(model_container=Building, default=None)
+    building = models.ForeignKey(Building, on_delete=models.PROTECT)
     office = models.TextField()
-    school = models.TextField(choices=SCHOOL_CHOICES)
-    department = models.TextField(choices=DEPARTMENT_CHOICES)
+    department = models.ForeignKey(Department, on_delete=models.PROTECT)
     asset_manager = models.TextField()
     changes_additions = models.TextField()
-    research_program = models.EmbeddedField(model_container=ResearchProgram,
-                                            default=None)
+    research_program = models.ForeignKey(ResearchProgram,
+                                         on_delete=models.PROTECT)
     invoice_url = models.URLField()
-    user_id = models.TextField()
-    objects = models.DjongoManager()
-
-    def __str__(self):
-        return self.registrationNumber
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                on_delete=models.PROTECT)
