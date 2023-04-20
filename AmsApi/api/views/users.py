@@ -28,15 +28,12 @@ class UsersView(views.APIView):
 
         return response
 
-    def post(self, request):
-        print(request.data)
+    def post(self, _request):
         serializer = serializers.UserSerializer(
             data=self.request.data, context={"request": self.request}
         )
         if serializer.is_valid():
-            print("inside")
-            instance = serializer.save()
-            print(instance)
-            return Response(serializer, status=status.HTTP_201_CREATED)
+            serializer.save()
+            return JsonResponse(data=serializer.data, safe=False)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

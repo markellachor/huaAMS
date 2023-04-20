@@ -21,7 +21,7 @@ class LoginView(views.APIView):
         return Response(None, status=status.HTTP_202_ACCEPTED)
 
 
-class Logout(views.APIView):
+class LogoutView(views.APIView):
     def post(self, request):
         logout(request)
         return Response(None, status=status.HTTP_204_NO_CONTENT)
