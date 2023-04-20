@@ -10,8 +10,8 @@ class ResearchProgram(models.Model):
 
 
 class Department(models.Model):
-    name: models.CharField(max_length=255, unique=True)
-    school: models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
+    school = models.CharField(max_length=255)
 
 
 class Building(models.Model):
