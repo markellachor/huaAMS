@@ -26,20 +26,17 @@ class Asset(models.Model):
     pieces = models.IntegerField()
     serial_number = models.TextField()
     invoice_number = models.TextField()
-    invoice_value = MoneyField(max_digits=14, decimal_places=2,
-                               default_currency='EUR')
-    acquisition_value = MoneyField(max_digits=14, decimal_places=2,
-                                   default_currency='EUR')
-    tax_value = MoneyField(max_digits=14, decimal_places=2,
-                           default_currency='EUR')
+    invoice_value = MoneyField(max_digits=14, decimal_places=2, default_currency="EUR")
+    acquisition_value = MoneyField(
+        max_digits=14, decimal_places=2, default_currency="EUR"
+    )
+    tax_value = MoneyField(max_digits=14, decimal_places=2, default_currency="EUR")
     supplier = models.TextField(max_length=255)
     building = models.ForeignKey(Building, on_delete=models.PROTECT)
     office = models.TextField()
     department = models.ForeignKey(Department, on_delete=models.PROTECT)
     asset_manager = models.TextField()
     changes_additions = models.TextField()
-    research_program = models.ForeignKey(ResearchProgram,
-                                         on_delete=models.PROTECT)
+    research_program = models.ForeignKey(ResearchProgram, on_delete=models.PROTECT)
     invoice_url = models.URLField()
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL,
-                                on_delete=models.PROTECT)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)

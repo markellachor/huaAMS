@@ -11,19 +11,17 @@ class LoginView(views.APIView):
 
     def post(self, request):
         serializer = serializers.LoginSerializer(
-                                                 data=self.request.data,
-                                                 context={'request':
-                                                          self.request})
+            data=self.request.data, context={"request": self.request}
+        )
 
         serializer.is_valid(raise_exception=True)
 
-        user = serializer.validated_data['user']
+        user = serializer.validated_data["user"]
         login(request, user)
         return Response(None, status=status.HTTP_202_ACCEPTED)
 
 
 class Logout(views.APIView):
-
     def post(self, request):
         logout(request)
         return Response(None, status=status.HTTP_204_NO_CONTENT)

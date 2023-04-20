@@ -18,26 +18,25 @@ class UsersView(views.APIView):
             else:
                 users_instance = User.objects.all()
                 data = serializers.UserSerializer(
-                    instance=users_instance, many=True).data
+                    instance=users_instance, many=True
+                ).data
                 response = JsonResponse(data=data, safe=False)
         except User.DoesNotExist:
-            response = JsonResponse({
-                'status_code': 404,
-                'error': 'The resource was not found'
-            }, status=404)
+            response = JsonResponse(
+                {"status_code": 404, "error": "The resource was not found"}, status=404
+            )
 
         return response
 
     def post(self, request):
         print(request.data)
-        serializer = serializers.UserSerializer(data=self.request.data,
-                                                context={'request':
-                                                         self.request})
+        serializer = serializers.UserSerializer(
+            data=self.request.data, context={"request": self.request}
+        )
         if serializer.is_valid():
             print("inside")
             instance = serializer.save()
             print(instance)
             return Response(serializer, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors,
-                            status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

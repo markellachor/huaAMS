@@ -13,15 +13,14 @@ class AssetView(views.APIView):
 
     def get(self, _request):
         asset_instance = Asset.objects.all()
-        data = serializers.AssetSerializer(
-            instance=asset_instance, many=True).data
+        data = serializers.AssetSerializer(instance=asset_instance, many=True).data
         print(data)
         response = JsonResponse(data=data, safe=False)
 
         return response
 
     def post(self, request):
-        body_unicode = request.body.decode('utf-8')
+        body_unicode = request.body.decode("utf-8")
         body = json.loads(body_unicode)
         # content = body['username']
         print(body)
