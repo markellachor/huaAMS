@@ -4,23 +4,23 @@ from djmoney.models.fields import MoneyField
 
 
 class ResearchProgram(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, unique=True)
     researcher = models.CharField(max_length=100)
     description = models.TextField()
 
 
 class Department(models.Model):
-    name: models.CharField(max_length=255)
+    name: models.CharField(max_length=255, unique=True)
     school: models.CharField(max_length=255)
 
 
 class Building(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     location = models.CharField(max_length=255)
 
 
 class Asset(models.Model):
-    registration_number = models.TextField()
+    registration_number = models.CharField(max_length=255, unique=True)
     description = models.TextField()
     category = models.CharField(max_length=255)
     pieces = models.IntegerField()
