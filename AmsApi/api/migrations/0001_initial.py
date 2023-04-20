@@ -42,6 +42,8 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
+                ("name", models.CharField(max_length=255)),
+                ("school", models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
