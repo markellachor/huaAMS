@@ -1,4 +1,4 @@
-from api.models import Department
+from api.models import Building
 from django.http import JsonResponse
 from rest_framework import permissions, status, views
 from rest_framework.response import Response
@@ -6,12 +6,11 @@ from rest_framework.response import Response
 from . import serializers
 
 
-class DepartmentsView(views.APIView):
-    # TODO: Staff or admin?
+class BuildingsView(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request):
-        serializer = serializers.DepartmentSerializer(
+        serializer = serializers.BuildingSerializer(
             data=request.data, context={"request": self.request}
         )
 
@@ -22,29 +21,30 @@ class DepartmentsView(views.APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, _request, id=None):
-        if id is not None:
-            try:
-                department = Department.objects.get(id=id)
-                data = serializers.DepartmentSerializer(instance=department).data
+        try:
+            if id is not None:
+                building_instance = Building.objects.get(id=id)
+                data = serializers.BuildingSerializer(instance=building_instance).data
                 response = JsonResponse(data=data)
-            except Department.DoesNotExist:
-                response = JsonResponse(
-                    {"status_code": 404, "error": "The resource was not found"},
-                    status=404,
-                )
-        else:
-            department = Department.objects.all()
-            data = serializers.DepartmentSerializer(instance=department, many=True).data
-            response = JsonResponse(data=data, safe=False)
+            else:
+                building_instance = Building.objects.all()
+                data = serializers.BuildingSerializer(
+                    instance=building_instance, many=True
+                ).data
+                response = JsonResponse(data=data, safe=False)
+        except Building.DoesNotExist:
+            response = JsonResponse(
+                {"status_code": 404, "error": "The resource was not found"}, status=404
+            )
 
         return response
 
     def delete(self, _request, id):
         try:
-            department_instance = Department.objects.get(id=id)
-            department_instance.delete()
+            building_instance = Building.objects.get(id=id)
+            building_instance.delete()
             response = Response(None, status=status.HTTP_200_OK)
-        except Department.DoesNotExist:
+        except Building.DoesNotExist:
             response = JsonResponse(
                 {"status_code": 404, "error": "The resource was not found"},
                 status=404,
