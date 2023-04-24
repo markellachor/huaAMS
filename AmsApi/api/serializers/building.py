@@ -5,4 +5,4 @@ from rest_framework import serializers
 class BuildingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Building
-        fields = ["id", "name", "location"]
+        fields = "__all__"
