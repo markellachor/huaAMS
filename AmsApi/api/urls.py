@@ -29,4 +29,13 @@ urlpatterns = [
         "research-programs/<int:id>",
         views.ResearchProgramsView.as_view(http_method_names=["get", "delete"]),
     ),
+    # Research programs
+    path(
+        "assets",
+        views.AssetView.as_view(http_method_names=["get", "post"]),
+    ),
+    path(
+        "assets/<int:id>",
+        views.AssetView.as_view(http_method_names=["get", "delete"]),
+    ),
 ]
