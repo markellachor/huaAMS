@@ -4,7 +4,10 @@ from django.urls import path
 urlpatterns = [
     # Users
     path("login", views.LoginView.as_view(http_method_names=["post"])),
-    path("users/<int:id>", views.UsersView.as_view(http_method_names=["get"])),
+    path(
+        "users/<int:id>",
+        views.UsersView.as_view(http_method_names=["get", "delete", "patch"]),
+    ),
     path("users", views.UsersView.as_view(http_method_names=["get", "post"])),
     # Departments
     path(
@@ -12,13 +15,13 @@ urlpatterns = [
     ),
     path(
         "departments/<int:id>",
-        views.DepartmentsView.as_view(http_method_names=["get", "delete"]),
+        views.DepartmentsView.as_view(http_method_names=["get", "delete", "patch"]),
     ),
     # Buildings
     path("buildings", views.BuildingsView.as_view(http_method_names=["get", "post"])),
     path(
         "buildings/<int:id>",
-        views.BuildingsView.as_view(http_method_names=["get", "delete"]),
+        views.BuildingsView.as_view(http_method_names=["get", "delete", "patch"]),
     ),
     # Research programs
     path(
@@ -27,7 +30,9 @@ urlpatterns = [
     ),
     path(
         "research-programs/<int:id>",
-        views.ResearchProgramsView.as_view(http_method_names=["get", "delete"]),
+        views.ResearchProgramsView.as_view(
+            http_method_names=["get", "delete", "patch"]
+        ),
     ),
     # Research programs
     path(
@@ -36,6 +41,6 @@ urlpatterns = [
     ),
     path(
         "assets/<int:id>",
-        views.AssetView.as_view(http_method_names=["get", "delete"]),
+        views.AssetView.as_view(http_method_names=["get", "delete", "patch"]),
     ),
 ]

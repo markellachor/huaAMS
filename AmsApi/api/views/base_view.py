@@ -26,7 +26,7 @@ class BaseView(views.APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, _request, id=None):
+    def get(self, _, id=None):
         if id is not None:
             try:
                 model_instance = self.model.objects.get(id=id)
@@ -44,11 +44,36 @@ class BaseView(views.APIView):
 
         return response
 
-    def delete(self, _request, id):
+    def delete(self, _, id):
         try:
             model_instance = self.model.objects.get(id=id)
             model_instance.delete()
             response = Response(None, status=status.HTTP_200_OK)
+        except self.model.DoesNotExist:
+            response = JsonResponse(
+                {"status_code": 404, "error": "The resource was not found"},
+                status=404,
+            )
+
+        return response
+
+    def patch(self, request: HttpRequest, id):
+        try:
+            model_instance = self.model.objects.get(id=id)
+            serializer = self.serializer(
+                model_instance,
+                data=request.data,
+                partial=True,
+                context={"request": self.request},
+            )
+
+            if serializer.is_valid():
+                serializer.save()
+                response = JsonResponse(data=serializer.data, safe=False)
+            else:
+                response = Response(
+                    serializer.errors, status=status.HTTP_400_BAD_REQUEST
+                )
         except self.model.DoesNotExist:
             response = JsonResponse(
                 {"status_code": 404, "error": "The resource was not found"},
