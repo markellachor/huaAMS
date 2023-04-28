@@ -1,39 +1,14 @@
-from django.contrib.auth.models import User
-from django.http import JsonResponse
-from rest_framework import permissions, status, views
-from rest_framework.response import Response
+from api.views.base_view import BaseView
+from django.contrib.auth import get_user_model
+from rest_framework import permissions
 
 from . import serializers
 
+UserModel = get_user_model()
 
-class UsersView(views.APIView):
+
+class UsersView(BaseView):
+    serializer = serializers.UserSerializer
+    # TODO: Staff or admin?
     permission_classes = (permissions.IsAdminUser,)
-
-    def get(self, _request, id=None):
-        try:
-            if id is not None:
-                user_instance = User.objects.get(id=id)
-                data = serializers.UserSerializer(instance=user_instance).data
-                response = JsonResponse(data=data)
-            else:
-                users_instance = User.objects.all()
-                data = serializers.UserSerializer(
-                    instance=users_instance, many=True
-                ).data
-                response = JsonResponse(data=data, safe=False)
-        except User.DoesNotExist:
-            response = JsonResponse(
-                {"status_code": 404, "error": "The resource was not found"}, status=404
-            )
-
-        return response
-
-    def post(self, _request):
-        serializer = serializers.UserSerializer(
-            data=self.request.data, context={"request": self.request}
-        )
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(data=serializer.data, safe=False)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    model = UserModel
