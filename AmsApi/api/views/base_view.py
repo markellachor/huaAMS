@@ -1,15 +1,21 @@
-from django.db import models
-from django.http import JsonResponse
-from rest_framework import serializers, status, views
+from typing import Tuple, Type, TypeVar
+
+from django.db.models import Model
+from django.http import HttpRequest, JsonResponse
+from rest_framework import permissions, serializers, status, views
 from rest_framework.response import Response
+
+M = TypeVar("M", bound=Model)
+S = TypeVar("S", bound=serializers.ModelSerializer)
+P = Tuple[permissions.BasePermission, ...]
 
 
 class BaseView(views.APIView):
-    serializer: serializers.ModelSerializer
-    permission_classes = None
-    model: models.Model
+    serializer: Type[S]
+    model: Type[M]
+    permission_classes = Type[P]
 
-    def post(self, request):
+    def post(self, request: HttpRequest):
         serializer = self.serializer(
             data=request.data, context={"request": self.request}
         )
