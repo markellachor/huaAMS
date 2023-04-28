@@ -1,7 +1,6 @@
 from api.models import Department
+from api.views.base_view import BaseView
 from rest_framework import permissions
-
-from AmsApi.api.views.base_view import BaseView
 
 from . import serializers
 
