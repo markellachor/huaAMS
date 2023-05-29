@@ -32,7 +32,13 @@ SECRET_KEY = "django-insecure-" "$xsq9i77$mpqxbpxq!dv27o4)02(+aeux#y0g6#&)q))+!*
 DEBUG = True
 
 # TODO: Define to env
-ALLOWED_HOSTS = ["localhost", "192.168.2.27", "127.0.0.1"]
+ALLOWED_HOSTS = [
+    "localhost",
+    "192.168.2.27",
+    "127.0.0.1",
+    "83.212.107.221",
+    "localhost:3000",
+]
 
 
 # Application definition
@@ -154,3 +160,23 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 # TODO: Retrieve values from config
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = ()
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = [
+'accept',
+'accept-encoding',
+'authorization',
+'content-type',
+'dnt',
+'origin',
+'user-agent',
+'x-csrftoken',
+'x-requested-with',
+'Xsrf-Token'
+]
+
+CSRF_COOKIE_SAMESITE = 'None'
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
