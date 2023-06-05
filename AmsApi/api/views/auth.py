@@ -2,6 +2,7 @@ from django.contrib.auth import login, logout
 from rest_framework import permissions, status, views
 from rest_framework.response import Response
 from django.middleware.csrf import get_token
+from django.http import HttpResponse
 
 from .. import serializers
 
@@ -19,11 +20,13 @@ class LoginView(views.APIView):
 
         user = serializer.validated_data["user"]
         login(request, user)
-        response = Response(None, status=status.HTTP_202_ACCEPTED)
-        response["XSRF-TOKEN"] = get_token(request)
-        response["Access-Control-Expose-Headers"] = "XSRF-TOKEN"
-
-        print(response["XSRF-TOKEN"])
+        response = HttpResponse(status=status.HTTP_202_ACCEPTED)
+        response["Access-Control-Allow-Origin"] = "http://localhost:3000"
+        response["Access-Control-Allow-Headers"] = "Content-Type, X-CSRFToken"
+        response["Access-Control-Allow-Credentials"] = "true"
+        
+    # Set the X-CSRFToken header
+        response["X-CSRFToken"] = get_token(request)
         return response
 
 
