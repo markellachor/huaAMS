@@ -1,16 +1,13 @@
-from api.models import Asset
-from api.serializers.building import BuildingSerializer
-from api.serializers.department import DepartmentSerializer
-from api.serializers.research_program import ResearchProgramSerializer
-from api.serializers.user import UserSerializer
+from api.models import Asset, Building, Department, ResearchProgram
+from api.serializers.user import UserModel
 from rest_framework import serializers
 
 
 class AssetSerializer(serializers.ModelSerializer):
-    building = BuildingSerializer()
-    department = DepartmentSerializer()
-    research_program = ResearchProgramSerializer()
-    user_id = UserSerializer()
+    building = serializers.SlugRelatedField(queryset=Building.objects.all(), slug_field='id')
+    department = serializers.SlugRelatedField(queryset=Department.objects.all(), slug_field='id')
+    research_program = serializers.SlugRelatedField(queryset=ResearchProgram.objects.all(), slug_field='id')
+    user_id = serializers.SlugRelatedField(queryset=UserModel.objects.all(), slug_field='id')
 
     class Meta:
         model = Asset

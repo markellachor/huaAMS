@@ -40,3 +40,5 @@ class Asset(models.Model):
     research_program = models.ForeignKey(ResearchProgram, on_delete=models.PROTECT)
     invoice_url = models.URLField()
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    qr_path = models.TextField(null=True, blank=True)
+
