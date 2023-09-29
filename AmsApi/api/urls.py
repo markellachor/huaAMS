@@ -4,6 +4,7 @@ from django.urls import path
 urlpatterns = [
     # Users
     path("login", views.LoginView.as_view(http_method_names=["post"])),
+    path("me", views.LoginView.as_view(http_method_names=["get"])),
     path(
         "users/<int:id>",
         views.UsersView.as_view(http_method_names=["get", "delete", "patch"]),
