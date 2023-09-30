@@ -29,7 +29,7 @@ class AssetView(BaseView):
             img.save(qr_path)
 
             asset = Asset.objects.filter(id=asset_id).update(
-                qr_path=qr_path
+                qr_path="static/assets/asset_qr_" + str(asset_id) + ".png"
             )
 
             return JsonResponse(data={"id":asset_id}, safe=False)
