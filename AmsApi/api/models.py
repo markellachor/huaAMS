@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from djmoney.models.fields import MoneyField
+from django.contrib.auth.models import User
 
 
 class ResearchProgram(models.Model):
@@ -42,3 +43,8 @@ class Asset(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     qr_path = models.TextField(null=True, blank=True)
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone = models.CharField(max_length=15, null=True, blank=True)
+    country = models.CharField(max_length=100, null=True, blank=True)
+    address = models.CharField(max_length=100, null=True, blank=True)

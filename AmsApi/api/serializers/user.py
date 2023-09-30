@@ -1,10 +1,20 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from api.models import Profile
 
 UserModel = get_user_model()
 
+from api.models import Profile
+from rest_framework import serializers
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = "__all__"
 
 class UserSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer(read_only=True)
     password = serializers.CharField(write_only=True)
 
     def create(self, validated_data):
@@ -33,4 +43,5 @@ class UserSerializer(serializers.ModelSerializer):
             "is_staff",
             "is_superuser",
             "is_active",
+            "profile"
         ]
