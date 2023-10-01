@@ -3,6 +3,12 @@ from django.db import models
 from djmoney.models.fields import MoneyField
 from django.contrib.auth.models import User
 
+def upload_to(instance, filename):
+    return '{filename}'.format(filename=filename)
+
+class File(models.Model):
+    file = models.FileField(upload_to=upload_to, blank=True, null=True)
+
 
 class ResearchProgram(models.Model):
     title = models.CharField(max_length=255, unique=True)
@@ -39,9 +45,10 @@ class Asset(models.Model):
     asset_manager = models.TextField()
     changes_additions = models.TextField()
     research_program = models.ForeignKey(ResearchProgram, on_delete=models.PROTECT)
-    invoice_url = models.URLField()
+    invoice_url = models.URLField(null=True, blank=True)
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     qr_path = models.TextField(null=True, blank=True)
+    invoice_id = models.ForeignKey(File, on_delete=models.PROTECT, null=True, blank=True)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

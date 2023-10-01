@@ -1,4 +1,4 @@
-from api.models import Asset, Building, Department, ResearchProgram
+from api.models import Asset, Building, Department, ResearchProgram, File
 from api.serializers.user import UserModel
 from rest_framework import serializers
 
@@ -8,6 +8,7 @@ class AssetSerializer(serializers.ModelSerializer):
     department = serializers.SlugRelatedField(queryset=Department.objects.all(), slug_field='id')
     research_program = serializers.SlugRelatedField(queryset=ResearchProgram.objects.all(), slug_field='id')
     user_id = serializers.SlugRelatedField(queryset=UserModel.objects.all(), slug_field='id')
+    invoice_id = serializers.SlugRelatedField(queryset=File.objects.all(), slug_field='id')
 
     class Meta:
         model = Asset

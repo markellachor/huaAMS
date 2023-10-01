@@ -44,4 +44,12 @@ urlpatterns = [
         "assets/<int:id>",
         views.AssetView.as_view(http_method_names=["get", "delete", "patch"]),
     ),
+    path(
+        "assets/invoice",
+        views.FileUploadAPIView.as_view(http_method_names=["post"]),
+    ),
+    path(
+        "assets/invoice/<int:id>",
+        views.FileUploadAPIView.as_view(http_method_names=["get"]),
+    )
 ]
