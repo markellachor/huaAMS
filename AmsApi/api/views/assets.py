@@ -35,3 +35,25 @@ class AssetView(BaseView):
             return JsonResponse(data={"id":asset_id}, safe=False)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, id=None):
+        current_user = request.user
+        if id is not None:
+            try:
+                model_instance = self.model.objects.filter(id=id).filter(user_id=current_user.id)
+                data = self.serializer(instance=model_instance).data
+                response = JsonResponse(data=data)
+            except self.model.DoesNotExist:
+                response = JsonResponse(
+                    {"status_code": 404, "error": "The resource was not found"},
+                    status=404,
+                )
+        else:
+            if current_user.is_superuser:
+                model_instance = self.model.objects.all()
+            else:
+                model_instance = self.model.objects.filter(user_id=current_user.id)
+            data = self.serializer(instance=model_instance, many=True).data
+            response = JsonResponse(data=data, safe=False)
+
+        return response
